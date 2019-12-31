@@ -3,12 +3,10 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = HomePage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
@@ -17,6 +15,22 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+  }
+
+  pickFile() {
+    window['fileChooser'].open(
+      function(contentUri) {
+        console.log('content uri', contentUri);
+        window['FilePath'].resolveNativePath(contentUri, fileUri => {
+          console.log('file uri', fileUri)
+        }, err => {
+          console.error('Error getting file uri', err);
+        });
+      },
+      err => {
+        console.error('Error picking file', err);
+      }
+    );
   }
 }
 
